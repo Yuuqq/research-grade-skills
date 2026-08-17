@@ -72,7 +72,7 @@ Deploy persistently with `modal deploy`:
 modal deploy script.py
 ```
 
-View deployed apps at https://modal.com/apps or with:
+View deployed apps in the Modal dashboard (see https://modal.com/docs) or with:
 ```bash
 modal app list
 ```
