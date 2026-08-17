@@ -126,4 +126,4 @@ View resource usage in Modal dashboard:
 - Disk usage
 - GPU metrics (if applicable)
 
-Access via https://modal.com/apps
+Access via the Modal dashboard: https://modal.com/docs

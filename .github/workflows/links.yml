@@ -16,9 +16,11 @@ jobs:
         with:
           args: >-
             --no-progress
-            --accept 200..=206,403,429
+            --accept 200..=206,301,302,403,429
             --timeout 20
             --max-concurrency 8
+            --exclude '^https://doi\.org/(10\.)?x'
+            --exclude '^https://doi\.org/xxxx'
             "scientific-skills/**/*.md"
             "README.md"
             "CONTRIBUTING.md"

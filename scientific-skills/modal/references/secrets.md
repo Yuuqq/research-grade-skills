@@ -4,7 +4,7 @@
 
 ### Via Dashboard
 
-Create secrets at https://modal.com/secrets
+Create secrets in the Modal dashboard: https://modal.com/docs/guide/secrets
 
 Templates available for:
 - Database credentials (Postgres, MongoDB)

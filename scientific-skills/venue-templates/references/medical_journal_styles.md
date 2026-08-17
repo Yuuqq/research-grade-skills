@@ -531,5 +531,5 @@ Standard presentation:
 - `venue_writing_styles.md` - Master style overview
 - `journals_formatting.md` - Technical formatting requirements
 - `reviewer_expectations.md` - What medical reviewers seek
-- Reporting guideline resources: consort-statement.org, strobe-statement.org
+- Reporting guideline resources: consort-spirit.org, strobe-statement.org
 

@@ -117,7 +117,7 @@ if __name__ == "__main__":
 
 ### View Execution Logs
 
-Check https://modal.com/apps for:
+Check the Modal dashboard (https://modal.com/docs) for:
 - Past execution logs
 - Execution history
 - Failure notifications

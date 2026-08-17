@@ -83,7 +83,7 @@ The EQUATOR Network (Enhancing the QUAlity and Transparency Of health Research) 
 - CONSORT for N-of-1 trials
 - CONSORT for stepped wedge designs
 
-**Where to access:** http://www.consort-statement.org/
+**Where to access:** https://www.consort-spirit.org/
 
 ### STROBE - Observational Studies
 
@@ -617,9 +617,9 @@ checklist is provided as Supplementary File 1."
 ### Official Guideline Websites
 
 - **EQUATOR Network**: https://www.equator-network.org/
-- **CONSORT**: http://www.consort-statement.org/
+- **CONSORT**: https://www.consort-spirit.org/
 - **STROBE**: https://www.strobe-statement.org/
-- **PRISMA**: http://www.prisma-statement.org/
+- **PRISMA**: https://www.prisma-statement.org/
 - **SPIRIT**: https://www.spirit-statement.org/
 - **ARRIVE**: https://arriveguidelines.org/
 - **CARE**: https://www.care-statement.org/
@@ -634,7 +634,7 @@ checklist is provided as Supplementary File 1."
 
 - **Some reference managers** can insert reporting guideline citations
 - **Covidence, RevMan** for systematic review reporting
-- **PRISMA flow diagram generator**: http://prisma.thetacollaborative.ca/
+- **PRISMA flow diagram generator**: https://www.prisma-statement.org/prisma-2020-flow-diagram
 
 ## Checklist: Using Reporting Guidelines
 

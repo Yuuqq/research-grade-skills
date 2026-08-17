@@ -370,8 +370,8 @@ If proposing extensive broader impacts activities but have no history of such wo
 ## Resources for Broader Impacts
 
 ### NSF Resources
-- **NSF Broader Impacts Website**: https://www.nsf.gov/od/oia/special/broaderimpacts/
-- **BI Examples Repository**: https://www.cmu.edu/uro/resources for undergraduate research/best practices/broader-impacts.html
+- **NSF Broader Impacts Website**: https://www.nsf.gov/funding/learn/broader-impacts
+- **Undergraduate research programs (example)**: https://www.cmu.edu/uro/
 - **Broader Impacts Toolkit**: Many universities provide institutional resources
 
 ### Assessment Tools

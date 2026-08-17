@@ -231,7 +231,7 @@ results = response.json()
 - `cited_patent_number` - Citations to other patents
 - `citedby_patent_number` - Patents citing this patent
 
-Refer to the full field dictionary at: https://search.patentsview.org/docs/
+Refer to the USPTO Open Data Portal field dictionaries and transition guide at: https://data.uspto.gov/support/transition-guide/patentsview
 
 ## Best Practices
 
@@ -261,6 +261,6 @@ Common HTTP status codes:
 
 ## Resources
 
-- **Official Documentation**: https://search.patentsview.org/docs/
+- **Official Documentation**: https://data.uspto.gov/support/transition-guide/patentsview
 - **API Key Registration**: https://account.uspto.gov/api-manager/
 - **Legacy API Notice**: The old PatentsView API was discontinued May 1, 2025
