@@ -1,0 +1,24 @@
+# External link checker config for the weekly `links` workflow.
+# Placeholder DOI examples are written as inline code so they are not checked.
+# The excludes below cover official hosts that still 200 in a browser but
+# reject or drop automated probes from GitHub Actions.
+
+verbose = "info"
+no_progress = true
+max_redirects = 10
+max_retries = 3
+retry_wait_time = 2
+max_concurrency = 8
+timeout = 20
+accept = ["200..=206", "301..=303", "403", "429"]
+
+exclude = [
+  # Placeholder DOI examples in skill docs
+  '^https://doi\.org/(10\.)?x',
+  '^https://doi\.org/xxxx',
+  # Third-party hosts that refuse or reset GitHub Actions connections
+  '^https://developer\.uspto\.gov/',
+  '^https://pennylane\.ai/',
+  '^https://colorable\.jxnblk\.com/',
+  '^https://(www\.)?recomb\.org/',
+]
