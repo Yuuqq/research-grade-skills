@@ -559,8 +559,7 @@ NSF uses two equally weighted criteria for all proposals:
 - **NSF Homepage**: https://www.nsf.gov
 - **Award Search**: https://www.nsf.gov/awardsearch/
 - **Proposal & Award Policies & Procedures Guide (PAPPG)**: https://www.nsf.gov/publications/pub_summ.jsp?ods_key=pappg
-- **FastLane**: https://www.fastlane.nsf.gov/
-- **Research.gov**: https://www.research.gov/
+- **Research.gov** (NSF grants portal): https://www.research.gov/research-web/
 - **Broader Impacts Resources**: https://www.nsf.gov/od/oia/special/broaderimpacts/
 - **NSF Funding Statistics**: https://www.nsf.gov/statistics/
 

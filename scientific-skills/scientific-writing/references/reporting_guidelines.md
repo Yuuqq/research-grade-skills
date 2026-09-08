@@ -353,7 +353,7 @@ The EQUATOR Network (Enhancing the QUAlity and Transparency Of health Research) 
 5. Discussion (summary, interpretation, limitations, conclusions)
 6. Other information (funding)
 
-**Where to access:** http://www.squire-statement.org/
+**Where to access:** https://www.equator-network.org/reporting-guidelines/squire/
 
 ### CHEERS - Economic Evaluations
 

@@ -195,7 +195,7 @@ Comprehensive requirements and formatting guidelines for major federal and priva
 
 **Resources**: 
 - NSF PAPPG: https://www.nsf.gov/publications/pub_summ.jsp?ods_key=pappg
-- NSF Fastlane: https://www.fastlane.nsf.gov/
+- NSF Research.gov portal: https://www.research.gov/research-web/
 
 ---
 
