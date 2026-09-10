@@ -60,7 +60,8 @@ def get_pdf_info(pdf_path):
             ['pdfinfo', str(pdf_path)],
             capture_output=True,
             text=True,
-            check=True
+            check=True,
+            timeout=60
         )
         
         info = {}
@@ -118,7 +119,8 @@ def check_fonts(pdf_path, venue_reqs):
             ['pdffonts', str(pdf_path)],
             capture_output=True,
             text=True,
-            check=True
+            check=True,
+            timeout=60
         )
         
         fonts_found = []
