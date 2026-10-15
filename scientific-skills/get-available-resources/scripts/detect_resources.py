@@ -189,7 +189,7 @@ def detect_apple_silicon_gpu() -> Optional[Dict[str, Any]]:
                         try:
                             cores = line.split(':')[1].strip()
                             gpu_info["gpu_cores"] = cores
-                        except:
+                        except Exception:
                             pass
             except Exception:
                 pass

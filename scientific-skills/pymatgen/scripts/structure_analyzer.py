@@ -139,7 +139,7 @@ def analyze_structure(struct: Structure, args) -> dict:
                 sga = SpacegroupAnalyzer(struct)
                 sym_struct = sga.get_symmetrized_structure()
                 wyckoff = sym_struct.equivalent_sites[0][0].species_string  # Simplified
-            except:
+            except Exception:
                 pass
 
         print(f"{i:<6} {site.species_string:<10} {wyckoff:<10} {coords_str:<30}")

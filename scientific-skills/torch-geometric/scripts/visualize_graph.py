@@ -275,7 +275,7 @@ def main():
         from torch_geometric.datasets import Planetoid
         dataset = Planetoid(root=f'/tmp/{args.dataset}', name=args.dataset)
         data = dataset[0]
-    except:
+    except Exception:
         try:
             # Try TUDataset
             from torch_geometric.datasets import TUDataset
