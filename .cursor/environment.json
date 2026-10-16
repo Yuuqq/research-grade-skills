@@ -1,0 +1,17 @@
+{
+  "name": "Research-Grade Skills",
+  "install": "pip install pyyaml ruff",
+  "terminals": [
+    {
+      "name": "catalog",
+      "command": "cd docs && python3 -m http.server 8000",
+      "description": "Serves the GitHub Pages skills catalog (docs/) at http://localhost:8000"
+    }
+  ],
+  "ports": [
+    {
+      "name": "catalog",
+      "port": 8000
+    }
+  ]
+}
