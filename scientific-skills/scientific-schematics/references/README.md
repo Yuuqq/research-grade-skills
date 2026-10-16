@@ -74,12 +74,9 @@ pip install requests
 
 ```bash
 python scripts/generate_schematic.py \
-  "CONSORT participant flow diagram for RCT. \
-   Assessed for eligibility (n=500). \
-   Excluded (n=150): age<18 (n=80), declined (n=50), other (n=20). \
-   Randomized (n=350) into Treatment (n=175) and Control (n=175). \
-   Lost to follow-up: 15 and 10 respectively. \
-   Final analysis: 160 and 165." \
+  "CONSORT participant flow diagram for an RCT. \
+   Fill assessed, excluded (with reasons), randomized, lost to follow-up, \
+   and analyzed from the study log. Do not invent counts." \
   -o figures/consort.png
 ```
 
@@ -170,7 +167,7 @@ for iteration in results['iterations']:
 
 ### Include Quantitative Details
 ✓ "Neural network: input (784), hidden (128), output (10)"  
-✓ "Flowchart: n=500 screened, n=150 excluded, n=350 randomized"  
+✓ "CONSORT flow using the screening and randomization counts from the study log"  
 ✗ "Some numbers" (not specific)
 
 ### Specify Visual Style

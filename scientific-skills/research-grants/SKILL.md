@@ -29,41 +29,16 @@ This skill should be used when:
 - Writing preliminary data or feasibility sections
 - Preparing biosketches, CVs, or facilities descriptions
 
-## Visual Enhancement with Scientific Schematics
+## Figures
 
-**⚠️ MANDATORY: Every research grant proposal MUST include at least 1-2 AI-generated figures using the scientific-schematics skill.**
+Figures are optional. A proposal is complete without an AI-generated image.
 
-This is not optional. Grant proposals without visual elements are incomplete and less competitive. Before finalizing any document:
-1. Generate at minimum ONE schematic or diagram (e.g., project timeline, methodology flowchart, or conceptual framework)
-2. Prefer 2-3 figures for comprehensive proposals (research workflow, Gantt chart, preliminary data visualization)
+- Preliminary-data plots must be the real plots. A Gantt chart or workflow diagram must match the timeline and methods already written.
+- scientific-schematics calls Gemini 3 Pro Image through OpenRouter (nickname: Nano Banana Pro). It may draft a conceptual diagram. It is a paid API, not a required step, and it must not invent preliminary results.
 
-**How to generate figures:**
-- Use the **scientific-schematics** skill to generate AI-powered publication-quality diagrams
-- Simply describe your desired diagram in natural language
-- Nano Banana Pro will automatically generate, review, and refine the schematic
-
-**How to generate schematics:**
 ```bash
-python scripts/generate_schematic.py "your diagram description" -o figures/output.png
+python scripts/generate_schematic.py "workflow already described in the proposal" -o figures/output.png
 ```
-
-The AI will automatically:
-- Create publication-quality images with proper formatting
-- Review and refine through multiple iterations
-- Ensure accessibility (colorblind-friendly, high contrast)
-- Save outputs in the figures/ directory
-
-**When to add schematics:**
-- Research methodology and workflow diagrams
-- Project timeline Gantt charts
-- Conceptual framework illustrations
-- System architecture diagrams (for technical proposals)
-- Experimental design flowcharts
-- Broader impacts activity diagrams
-- Collaboration network diagrams
-- Any complex concept that benefits from visualization
-
-For detailed guidance on creating schematics, refer to the scientific-schematics skill documentation.
 
 ---
 

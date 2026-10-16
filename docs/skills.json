@@ -101,7 +101,7 @@
       "Social Science & Economics"
     ],
     "path": "scientific-skills/computational-social-science",
-    "lines": 288,
+    "lines": 285,
     "n_references": 3,
     "n_scripts": 1,
     "maturity": 4,
@@ -375,7 +375,7 @@
       "General"
     ],
     "path": "scientific-skills/hypothesis-generation",
-    "lines": 297,
+    "lines": 273,
     "n_references": 3,
     "n_scripts": 0,
     "maturity": 4,
@@ -393,7 +393,7 @@
       "General"
     ],
     "path": "scientific-skills/latex-posters",
-    "lines": 961,
+    "lines": 934,
     "n_references": 5,
     "n_scripts": 1,
     "maturity": 5,
@@ -411,7 +411,7 @@
       "General"
     ],
     "path": "scientific-skills/literature-review",
-    "lines": 637,
+    "lines": 616,
     "n_references": 2,
     "n_scripts": 3,
     "maturity": 5,
@@ -835,7 +835,7 @@
       "General"
     ],
     "path": "scientific-skills/research-grants",
-    "lines": 954,
+    "lines": 929,
     "n_references": 8,
     "n_scripts": 0,
     "maturity": 5,
@@ -918,7 +918,7 @@
   {
     "id": "scientific-schematics",
     "name": "scientific-schematics",
-    "description": "Create publication-quality scientific diagrams using Nano Banana Pro AI with smart iterative refinement. Uses Gemini 3 Pro for quality review. Only regenerates if quality is below threshold for your document type. Specialized in neural network architectures, system diagrams, flowcharts, biological pathways, and complex scientific visualizations.",
+    "description": "Create publication-quality conceptual diagrams with Gemini 3 Pro Image via OpenRouter (nickname Nano Banana Pro) and Gemini 3 Pro quality review. Regenerates only when quality is below the document-type threshold. Do not use it to invent measured results or study-flow counts. Specialized in neural network architectures, system diagrams, flowcharts, biological pathways, and complex scientific visualizations.",
     "license": "MIT license",
     "category": "Visualization",
     "disciplines": [
@@ -979,7 +979,7 @@
       "General"
     ],
     "path": "scientific-skills/scientific-writing",
-    "lines": 718,
+    "lines": 639,
     "n_references": 6,
     "n_scripts": 0,
     "maturity": 5,

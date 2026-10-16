@@ -35,7 +35,7 @@ echo ""
 echo "Example 1: CONSORT Flowchart"
 echo "----------------------------"
 python scripts/generate_schematic.py \
-  "CONSORT participant flow diagram. Assessed for eligibility (n=500). Excluded (n=150) with reasons: age<18 (n=80), declined (n=50), other (n=20). Randomized (n=350) into Treatment (n=175) and Control (n=175). Lost to follow-up: 15 and 10. Final analysis: 160 and 165." \
+  "CONSORT participant flow diagram using only counts already recorded in the study log: assessed, excluded with reasons, randomized per arm, lost to follow-up, and analyzed. Do not invent counts." \
   -o figures/consort_example.png \
   --iterations 2
 

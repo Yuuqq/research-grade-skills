@@ -29,7 +29,7 @@ python scripts/generate_schematic.py "your diagram description" -o output.png
 ### CONSORT Flowchart
 ```bash
 python scripts/generate_schematic.py \
-  "CONSORT flow: screened n=500, excluded n=150, randomized n=350" \
+  "CONSORT flow using the screening, exclusion, and randomization counts from the study log" \
   -o consort.png
 ```
 
@@ -66,7 +66,7 @@ python scripts/generate_schematic.py \
 ## Prompt Tips
 
 ### ✓ Good Prompts (Specific)
-- "CONSORT flowchart with screening (n=500), exclusion (n=150), randomization (n=350)"
+- "CONSORT flowchart using the recorded screening, exclusion, and randomization counts"
 - "Transformer architecture: encoder on left with 6 layers, decoder on right, cross-attention connections"
 - "MAPK signaling: receptor → RAS → RAF → MEK → ERK → nucleus, label each phosphorylation"
 
