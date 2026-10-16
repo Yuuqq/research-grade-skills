@@ -1,46 +1,61 @@
 # Repository Code Review: research-grade-skills
 
-*Note: This is an advisory review document (Date: 2024-09-10). It is not a CI gate.*
+*Advisory snapshot, updated 2026-10-16. Not a CI gate and not project policy.*
 
-This file documents the findings from a comprehensive code review of the `research-grade-skills` repository, organized by severity (CRITICAL, HIGH, MEDIUM, LOW).
+Methodology: static reading of `SKILL.md` files, `scripts/validate_skills.py`, `.github/workflows/validate.yml`, `JULES.md`, `README.md`, and the bundled Python under `scientific-skills/`. This file corrects the 2026-09-10 snapshot `6135eb6257176d03768af3feb28b2ee32ad76fbe` (that copy was dated 2024 and described code after it had already changed). It supersedes `.planning/codebase/CONCERNS.md` (2026-04-30) wherever that note disagrees with the current tree. `CONCERNS.md` still claims a 142-vs-67 marketplace split and no content CI. Both claims are false: `validate.yml` runs `scripts/validate_skills.py` and ruff, and the bounding-box unittest.
 
-## CRITICAL
+Severity below is for **open** issues. Items fixed in the 2026-10-16 update are listed under Resolved so they are not re-filed as if they were still true.
 
-### 1. Undeclared Vendor Dependencies (Vendor Promotion Regressions)
-- **Files**: `scientific-skills/scientific-schematics/SKILL.md`, `scientific-skills/scientific-slides/SKILL.md`, `scientific-skills/markitdown/SKILL.md`, `scientific-skills/venue-templates/SKILL.md`, and references/scripts in `scientific-schematics` and `scientific-slides` (e.g., `generate_schematic_ai.py`, `generate_slide_image_ai.py`), plus many others referencing "Nano Banana Pro" (25 files total).
-- **Impact**: The repository description and README explicitly state "All vendor promotion removed" and "no vendor ads". However, numerous skills extensively promote and instruct the use of "Nano Banana Pro" (which is Google Gemini 3 Pro Image via OpenRouter). This creates an undeclared proprietary dependency and explicitly violates the project's core anti-vendor-steering promise. The CI validation (`validate_skills.py`) checks for `k-dense.ai` and `Suggest Using K-Dense`, but misses this model name because the CI promo gate only watches `SKILL.md` body after frontmatter. Additionally, some skills (like `literature-review/SKILL.md`) make AI-generated figures mandatory, which creates research integrity issues.
-- **Fix**: Correct the identification of the model. Treat this as an undeclared commercial-model lock-in. Update `scripts/validate_skills.py` to watch out for vendor dependencies beyond just the current PROMO_PATTERNS strings. Remove the mandate for AI-generated figures in literature reviews.
+## Open
 
-## HIGH
+### HIGH
 
-### 1. Reliability: Missing Timeouts in subprocess calls
-- **Files**: `scientific-skills/venue-templates/scripts/validate_format.py` (Lines 59-64, 117-122).
-- **Impact**: The `subprocess.run` calls execute external binaries (like `pdfinfo`, `pdffonts`) without setting a `timeout`. This can cause scripts to hang indefinitely if the underlying process blocks.
-- **Fix**: Add a `timeout` argument (e.g., `timeout=60`) to `subprocess.run()` calls. Note: these are argv-list invocations, so `shell` defaults to `False`. There is no command injection risk here, and `shlex.quote()` should NOT be used on list arguments.
+#### 1. Commercial image-model dependency, not a K-Dense ad regression
 
-### 2. Reliability: Bare `except` or `except Exception: pass` Clauses
-- **Files**: `scientific-skills/scientific-slides/scripts/generate_slide_image_ai.py` (Lines 658-662), `scientific-skills/torch-geometric/scripts/visualize_graph.py` (Line 278), `scientific-skills/get-available-resources/scripts/detect_resources.py` (Line 192), `scientific-skills/pymatgen/scripts/structure_analyzer.py` (Line 142).
-- **Impact**: The scripts catch generic exceptions (and in some cases, bare `except:` clauses which swallow `KeyboardInterrupt` and `SystemExit`) and do nothing (`pass`). This is an anti-pattern that can silently swallow important errors and make debugging very difficult.
-- **Fix**: Catch specific exceptions, such as `Exception`, `OSError` or `FileNotFoundError`, and log a warning or error message rather than silently passing. Avoid bare `except:` clauses.
+- **Files**: `scientific-skills/scientific-schematics/`, `scientific-skills/scientific-slides/`, and other skills that still tell the agent to call "Nano Banana Pro".
+- **What it actually is**: Nano Banana Pro is Google Gemini 3 Pro Image (`google/gemini-3-pro-image-preview`) via `https://openrouter.ai/api/v1`. The scripts set that model id and base URL. It is not an internal K-Dense product, and it is not an undeclared proprietary binary.
+- **What the anti-steering promise covers**: `README.md` and `CONTRIBUTING.md` describe removal of K-Dense Web / `k-dense.ai` / "Suggest Using K-Dense" session ads. `PROMO_PATTERNS` in `scripts/validate_skills.py` is those three strings. `check_promo()` scans `SKILL.md` body after frontmatter only. No skill body currently matches those strings.
+- **What is still true**: schematics and slides still teach this one paid model as the default way to draw figures. That is a commercial-model dependency. Replacing the nickname with DALL-E or Midjourney would only swap vendors. Adding `Nano Banana Pro` to `PROMO_PATTERNS` would fail CI on skills that mention the nickname and would still miss `scripts/` and `references/`.
+- **Do not**: call this a vendor-promotion regression, or tell the validator to grep the nickname.
 
-## MEDIUM
+### MEDIUM
 
-### 1. Security: Hardcoded Insecure Temporary Directories
-- **Files**: `scientific-skills/torch-geometric/scripts/benchmark_model.py` (Lines 144, 183), `scientific-skills/torch-geometric/scripts/visualize_graph.py` (Lines 276, 282).
-- **Impact**: The scripts hardcode `/tmp/{dataset_name}` as the root directory for datasets. Hardcoding `/tmp/` paths can lead to symlink attacks, race conditions, or permission conflicts if multiple users run the script on the same machine.
-- **Fix**: Use Python's built-in `tempfile` module (e.g., `tempfile.gettempdir()` or `tempfile.TemporaryDirectory`) to safely manage temporary storage paths, or default to a local `./data` directory relative to the current working directory.
+#### 1. Optional Google Scholar free proxies
 
-### 2. Reliability: Network Requests Without Timeouts
-- **Files**: `scientific-skills/uspto-database/scripts/patent_search.py` (Line 70), `scientific-skills/uspto-database/scripts/trademark_client.py` (Lines 55, 76).
-- **Impact**: Using `requests.post()` and `requests.get()` without specifying a `timeout` argument means the program can hang indefinitely if the remote server (USPTO APIs) is unresponsive or drops packets.
-- **Fix**: Always include a `timeout` argument in `requests` calls (e.g., `requests.get(url, headers=self.headers, timeout=30)`).
+- **File**: `scientific-skills/citation-management/scripts/search_google_scholar.py` (`GoogleScholarSearcher`, `--use-proxy`).
+- **Impact**: The flag still calls `ProxyGenerator().FreeProxies()` and sends the query through untrusted proxies (interception risk, and a Google Scholar terms risk). The default is off, and the CLI now prints a warning before it does this.
+- **Fix**: Leave the default off. Prefer removing the flag over routing research queries through free proxies.
 
-### 3. Test Coverage: Low Coverage for Scripts
-- **Impact**: There are very few unit tests for scripts in the `scientific-skills/` directory (e.g., `check_bounding_boxes_test.py`).
-- **Fix**: Create a testing plan to add unit tests for critical data processing and API integration scripts, particularly those interacting with external APIs (like OpenAlex, USPTO, bioRxiv) and file parsing (like DOCX, PDF, PPTX validations).
+#### 2. Promo CI does not read scripts or references
 
-## LOW
+- **File**: `scripts/validate_skills.py`, `check_promo()`.
+- **Impact**: A K-Dense steering string in a script or a `references/` file would not fail CI. Nothing in `scientific-skills/` matches the current patterns today, so this is a regression hole, not an active leak.
+- **Fix**: If the gate grows, scan `scripts/` and `references/` for the existing three patterns. Do not add the Gemini nickname to that list.
 
-### 1. Developer Experience: `pytest` and test infrastructure not standard
-- **Impact**: The CI workflow `.github/workflows/validate.yml` runs `scripts/validate_skills.py` and `ruff`, but it does not invoke `pytest`. There are tests in the codebase (e.g., `check_bounding_boxes_test.py`), but they are not enforced on commit.
-- **Fix**: Add a `pytest` step to `validate.yml` to ensure all existing and future unit tests are run in CI. Add `pytest` and `pytest-cov` to the development dependencies.
+### LOW
+
+#### 1. USPTO markdown samples still omit timeouts
+
+- **Files**: `scientific-skills/uspto-database/SKILL.md` and `scientific-skills/uspto-database/references/*.md`.
+- **Impact**: The executable clients `patent_search.py` and `trademark_client.py` set `timeout=30`. Copy-paste samples in the skill prose still show `requests.get` / `requests.post` without a timeout.
+- **Fix**: Add `timeout=30` to those samples when they are next edited.
+
+#### 2. Almost no script tests
+
+- **Impact**: CI runs the one unittest at `scientific-skills/document-skills/pdf/scripts/check_bounding_boxes_test.py`. Other bundled scripts have no tests. This repository has no `requirements.txt` or `pyproject.toml` on purpose (`JULES.md`). There is no measured coverage number.
+- **Fix**: Add tests beside a script when that script's behavior changes. Do not add `pytest-cov` as a project dependency, and do not treat a coverage percentage as a finding unless the command and output are in this file.
+
+## Resolved (2026-10-16)
+
+These were open in the 2026-09-10 snapshot, or were false there. They are not open findings.
+
+- **Research-integrity mandates.** `literature-review`, `scientific-writing`, `hypothesis-generation`, `research-grants`, `latex-posters`, and `computational-social-science` no longer require AI-generated figures. PRISMA, CONSORT, and STROBE counts must come from the screening or study log. `scientific-schematics` no longer demonstrates a CONSORT diagram with invented counts (500 / 150 / 350).
+- **Subprocess injection.** `validate_format.py` calls `pdfinfo` and `pdffonts` as argv lists. `shell` defaults to `False`. There is no command injection, and `shlex.quote()` must not be applied to list arguments. Both calls use `timeout=60`, and both catch `subprocess.TimeoutExpired` so a hang returns a skip instead of raising.
+- **Bare `except:`.** `visualize_graph.py`, `detect_resources.py`, and `structure_analyzer.py` no longer use a bare `except:`. Failures are logged. `visualize_graph.py` catches `ImportError`, `ValueError`, `OSError`, and `RuntimeError` around dataset loading. `generate_slide_image_ai.py` temp-file cleanup catches `OSError` and warns. `structure_analyzer.py` reads Wyckoff letters from the symmetry dataset instead of printing the first site's species in that column.
+- **Dataset cache path.** `visualize_graph.py` and `benchmark_model.py` store PyG downloads under `$XDG_CACHE_HOME/research-grade-skills/torch-geometric/<name>` (default `~/.cache/...`). They do not use `/tmp/<name>` and they do not use `tempfile.TemporaryDirectory` (that would delete the cache on exit).
+- **Request timeouts.** `generate_image.py` uses `timeout=120` and exits on `requests.Timeout`. `patent_search.py` and `trademark_client.py` use `timeout=30`.
+- **`.env` walk.** `generate_image.py`, `generate_slide_image_ai.py`, and `generate_schematic_ai.py` read a `.env` from the working directory up through its git root, plus the script directory. They do not continue into a parent account or home directory.
+- **Product identity headers.** Those OpenRouter clients send `HTTP-Referer: https://github.com/Yuuqq/research-grade-skills`. They no longer send `scientific-writer`.
+- **`skill-author: K-Dense Inc.`** Not a defect. `JULES.md` requires that frontmatter field. Attribution in frontmatter, LICENSE, and README is allowed. Body-text steering is what `PROMO_PATTERNS` bans.
+- **Coverage figure.** The old "~34%" claim had no command and no output. It is withdrawn.
+- **`pytest` as a development dependency.** Not adopted. The existing unittest is invoked directly from `validate.yml`.

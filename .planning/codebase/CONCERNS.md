@@ -1,5 +1,7 @@
 # Codebase Concerns
 
+> **Superseded for inventory and CI claims.** This note is dated 2026-04-30 and describes a checkout that no longer exists (marketplace 142 vs disk 67, "no CI"). Current registry checks live in `scripts/validate_skills.py` and `.github/workflows/validate.yml`. Open findings are in the advisory [REVIEW.md](../../REVIEW.md) (updated 2026-10-16). Do not treat the critical items below as the current tree.
+
 **Analysis Date:** 2026-04-30
 
 ## Inventory Integrity: Marketplace vs Disk Divergence
