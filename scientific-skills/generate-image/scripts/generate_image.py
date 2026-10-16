@@ -19,19 +19,48 @@ from pathlib import Path
 from typing import Optional
 
 
+def _dotenv_search_dirs():
+    """Directories allowed to supply a .env.
+
+    Search the working directory up through its git root, then the script
+    directory. Do not walk past the git root into a home directory or
+    another project.
+    """
+    cwd = Path.cwd()
+    git_root = None
+    for parent in (cwd, *cwd.parents):
+        if (parent / ".git").exists():
+            git_root = parent
+            break
+    node = cwd
+    while True:
+        yield node
+        if git_root is None or node == git_root:
+            break
+        parent = node.parent
+        if parent == node:
+            break
+        node = parent
+    script_dir = Path(__file__).resolve().parent
+    if script_dir != cwd:
+        yield script_dir
+
+
 def check_env_file() -> Optional[str]:
-    """Check if .env file exists and contains OPENROUTER_API_KEY."""
-    # Look for .env in current directory and parent directories
-    current_dir = Path.cwd()
-    for parent in [current_dir] + list(current_dir.parents):
-        env_file = parent / ".env"
-        if env_file.exists():
-            with open(env_file, 'r') as f:
-                for line in f:
-                    if line.startswith('OPENROUTER_API_KEY='):
-                        api_key = line.split('=', 1)[1].strip().strip('"').strip("'")
-                        if api_key:
-                            return api_key
+    """Read OPENROUTER_API_KEY from a .env inside the current git checkout."""
+    for directory in _dotenv_search_dirs():
+        env_file = directory / ".env"
+        if not env_file.is_file():
+            continue
+        try:
+            lines = env_file.read_text(encoding="utf-8").splitlines()
+        except OSError:
+            continue
+        for line in lines:
+            if line.startswith("OPENROUTER_API_KEY="):
+                api_key = line.split("=", 1)[1].strip().strip('"').strip("'")
+                if api_key:
+                    return api_key
     return None
 
 
@@ -141,23 +170,28 @@ def generate_image(
         message_content = prompt
 
     # Make API request
-    response = requests.post(
-        url="https://openrouter.ai/api/v1/chat/completions",
-        headers={
-            "Authorization": f"Bearer {api_key}",
-            "Content-Type": "application/json",
-        },
-        json={
-            "model": model,
-            "messages": [
-                {
-                    "role": "user",
-                    "content": message_content
-                }
-            ],
-            "modalities": ["image", "text"]
-        }
-    )
+    try:
+        response = requests.post(
+            url="https://openrouter.ai/api/v1/chat/completions",
+            headers={
+                "Authorization": f"Bearer {api_key}",
+                "Content-Type": "application/json",
+            },
+            json={
+                "model": model,
+                "messages": [
+                    {
+                        "role": "user",
+                        "content": message_content
+                    }
+                ],
+                "modalities": ["image", "text"]
+            },
+            timeout=120,
+        )
+    except requests.Timeout:
+        print("Error: OpenRouter image request timed out after 120s", file=sys.stderr)
+        sys.exit(1)
 
     # Check for errors
     if response.status_code != 200:

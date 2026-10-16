@@ -33,3 +33,6 @@ jobs:
       - run: pip install ruff
       - name: Ruff (error-level rules)
         run: ruff check scientific-skills scripts --select E9,F63,F7,F82
+      - name: Existing bounding-box unit tests
+        working-directory: scientific-skills/document-skills/pdf/scripts
+        run: python -m unittest check_bounding_boxes_test.py

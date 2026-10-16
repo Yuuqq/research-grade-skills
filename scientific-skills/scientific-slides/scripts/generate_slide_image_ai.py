@@ -46,41 +46,46 @@ except ImportError:
     sys.exit(1)
 
 
+def _dotenv_search_dirs():
+    """Directories allowed to supply a .env.
+
+    Search the working directory up through its git root, then the script
+    directory. Do not walk past the git root into a home directory or
+    another project.
+    """
+    cwd = Path.cwd()
+    git_root = None
+    for parent in (cwd, *cwd.parents):
+        if (parent / ".git").exists():
+            git_root = parent
+            break
+    node = cwd
+    while True:
+        yield node
+        if git_root is None or node == git_root:
+            break
+        parent = node.parent
+        if parent == node:
+            break
+        node = parent
+    script_dir = Path(__file__).resolve().parent
+    if script_dir != cwd:
+        yield script_dir
+
+
 def _load_env_file():
-    """Load .env file from current directory, parent directories, or package directory."""
+    """Load a .env from the current git checkout or the script directory."""
     try:
         from dotenv import load_dotenv
     except ImportError:
         return False
-    
-    # Try current working directory first
-    env_path = Path.cwd() / ".env"
-    if env_path.exists():
+
+    for directory in _dotenv_search_dirs():
+        env_path = directory / ".env"
+        if not env_path.is_file():
+            continue
         load_dotenv(dotenv_path=env_path, override=False)
         return True
-        
-    # Try parent directories (up to 5 levels)
-    cwd = Path.cwd()
-    for _ in range(5):
-        env_path = cwd / ".env"
-        if env_path.exists():
-            load_dotenv(dotenv_path=env_path, override=False)
-            return True
-        cwd = cwd.parent
-        if cwd == cwd.parent:
-            break
-    
-    # Try the package's parent directory
-    script_dir = Path(__file__).resolve().parent
-    for _ in range(5):
-        env_path = script_dir / ".env"
-        if env_path.exists():
-            load_dotenv(dotenv_path=env_path, override=False)
-            return True
-        script_dir = script_dir.parent
-        if script_dir == script_dir.parent:
-            break
-            
     return False
 
 
@@ -209,8 +214,8 @@ STYLE:
         headers = {
             "Authorization": f"Bearer {self.api_key}",
             "Content-Type": "application/json",
-            "HTTP-Referer": "https://github.com/scientific-writer",
-            "X-Title": "Scientific Slide Generator"
+            "HTTP-Referer": "https://github.com/Yuuqq/research-grade-skills",
+            "X-Title": "research-grade-skills"
         }
         
         payload = {
@@ -658,8 +663,8 @@ Generate a high-quality {'visual/figure' if visual_only else 'presentation slide
             try:
                 if temp_file.exists():
                     temp_file.unlink()
-            except Exception:
-                pass
+            except OSError as e:
+                print(f"Warning: failed to delete temp file {temp_file}: {e}", file=sys.stderr)
         
         # Save only the final image to output path
         if results["success"] and final_image_data:

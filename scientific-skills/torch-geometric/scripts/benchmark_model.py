@@ -11,14 +11,27 @@ Usage:
 """
 
 import argparse
+import os
+import time
+from pathlib import Path
+import numpy as np
 import torch
 import torch.nn.functional as F
 from torch_geometric.nn import GCNConv, GATConv, SAGEConv, GINConv
 from torch_geometric.datasets import Planetoid, TUDataset
 from torch_geometric.loader import DataLoader
 from torch_geometric.nn import global_mean_pool
-import time
-import numpy as np
+
+
+def pyg_dataset_root(name: str) -> str:
+    """Cache a PyG dataset under XDG_CACHE_HOME, not shared /tmp."""
+    safe = Path(name).name
+    if not safe or safe in {".", ".."}:
+        raise ValueError(f"invalid dataset name: {name!r}")
+    base = os.environ.get("XDG_CACHE_HOME") or str(Path.home() / ".cache")
+    root = Path(base) / "research-grade-skills" / "torch-geometric" / safe
+    root.mkdir(parents=True, exist_ok=True)
+    return str(root)
 
 
 class GCN(torch.nn.Module):
@@ -141,7 +154,7 @@ def test_graph_classification(model, loader, device):
 def benchmark_node_classification(model_name, dataset_name, epochs, lr, weight_decay, device):
     """Benchmark a model on node classification."""
     # Load dataset
-    dataset = Planetoid(root=f'/tmp/{dataset_name}', name=dataset_name)
+    dataset = Planetoid(root=pyg_dataset_root(dataset_name), name=dataset_name)
     data = dataset[0].to(device)
 
     # Create model
@@ -180,7 +193,7 @@ def benchmark_node_classification(model_name, dataset_name, epochs, lr, weight_d
 def benchmark_graph_classification(model_name, dataset_name, epochs, lr, device):
     """Benchmark a model on graph classification."""
     # Load dataset
-    dataset = TUDataset(root=f'/tmp/{dataset_name}', name=dataset_name)
+    dataset = TUDataset(root=pyg_dataset_root(dataset_name), name=dataset_name)
 
     # Split dataset
     dataset = dataset.shuffle()

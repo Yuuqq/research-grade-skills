@@ -67,7 +67,7 @@ class PatentSearchClient:
         if options:
             data["o"] = options
 
-        response = requests.post(url, headers=self.headers, json=data)
+        response = requests.post(url, headers=self.headers, json=data, timeout=30)
         response.raise_for_status()
 
         return response.json()
