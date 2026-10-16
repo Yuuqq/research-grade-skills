@@ -37,7 +37,7 @@ This skill should be used when:
 
 ## Slide Generation with Nano Banana Pro
 
-**This skill uses Nano Banana Pro AI to generate stunning presentation slides automatically.**
+**This skill can generate slide images with Gemini 3 Pro Image through OpenRouter.** "Nano Banana Pro" is the nickname for that model, not a separate product. It is an optional paid API. Do not use it to draw charts of numbers you have not computed. The PPTX and LaTeX paths in this skill do not require it.
 
 There are two workflows depending on output format:
 

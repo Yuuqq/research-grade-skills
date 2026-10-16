@@ -183,20 +183,26 @@ def detect_apple_silicon_gpu() -> Optional[Dict[str, Any]]:
 
                 # Parse GPU core info from system_profiler
                 for line in result.stdout.split('\n'):
-                    if 'Chipset Model' in line:
-                        gpu_info["chipset"] = line.split(':')[1].strip()
-                    elif 'Total Number of Cores' in line:
+                    if 'Chipset Model' in line or 'Total Number of Cores' in line:
                         try:
-                            cores = line.split(':')[1].strip()
-                            gpu_info["gpu_cores"] = cores
-                        except Exception:
-                            pass
-            except Exception:
-                pass
+                            value = line.split(':')[1].strip()
+                        except IndexError:
+                            print(
+                                "Warning: could not parse system_profiler line: "
+                                f"{line.strip()}",
+                                file=sys.stderr,
+                            )
+                            continue
+                        if 'Chipset Model' in line:
+                            gpu_info["chipset"] = value
+                        else:
+                            gpu_info["gpu_cores"] = value
+            except (subprocess.TimeoutExpired, OSError) as e:
+                print(f"Warning: Apple GPU profiler failed: {e}", file=sys.stderr)
 
             return gpu_info
-    except Exception:
-        pass
+    except (subprocess.TimeoutExpired, OSError) as e:
+        print(f"Warning: Apple Silicon GPU detection failed: {e}", file=sys.stderr)
 
     return None
 

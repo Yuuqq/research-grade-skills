@@ -17,11 +17,25 @@ Or import and use:
 """
 
 import argparse
+import os
+import sys
+from pathlib import Path
 import matplotlib.pyplot as plt
 import networkx as nx
 import torch
 from typing import Optional, Union
 import numpy as np
+
+
+def pyg_dataset_root(name: str) -> str:
+    """Cache a PyG dataset under XDG_CACHE_HOME, not shared /tmp."""
+    safe = Path(name).name
+    if not safe or safe in {".", ".."}:
+        raise ValueError(f"invalid dataset name: {name!r}")
+    base = os.environ.get("XDG_CACHE_HOME") or str(Path.home() / ".cache")
+    root = Path(base) / "research-grade-skills" / "torch-geometric" / safe
+    root.mkdir(parents=True, exist_ok=True)
+    return str(root)
 
 
 def visualize_data(
@@ -270,20 +284,26 @@ def main():
     # Load dataset
     print(f"Loading dataset: {args.dataset}")
 
+    dataset_root = pyg_dataset_root(args.dataset)
+    load_errors = (ImportError, ValueError, OSError, RuntimeError)
     try:
         # Try Planetoid datasets
         from torch_geometric.datasets import Planetoid
-        dataset = Planetoid(root=f'/tmp/{args.dataset}', name=args.dataset)
+        dataset = Planetoid(root=dataset_root, name=args.dataset)
         data = dataset[0]
-    except Exception:
+    except load_errors as planetoid_error:
         try:
             # Try TUDataset
             from torch_geometric.datasets import TUDataset
-            dataset = TUDataset(root=f'/tmp/{args.dataset}', name=args.dataset)
+            dataset = TUDataset(root=dataset_root, name=args.dataset)
             data = dataset[0]
-        except Exception as e:
-            print(f"Error loading dataset: {e}")
-            print("Supported datasets: Cora, CiteSeer, PubMed, ENZYMES, PROTEINS, etc.")
+        except load_errors as e:
+            print(f"Error loading dataset: {e}", file=sys.stderr)
+            print(f"Planetoid load failed first: {planetoid_error}", file=sys.stderr)
+            print(
+                "Supported datasets: Cora, CiteSeer, PubMed, ENZYMES, PROTEINS, etc.",
+                file=sys.stderr,
+            )
             return
 
     print(f"Loaded {args.dataset}: {data.num_nodes} nodes, {data.num_edges} edges")

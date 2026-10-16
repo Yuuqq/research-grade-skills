@@ -25,41 +25,14 @@ This skill should be used when:
 - Building posters with complex multi-column layouts
 - Integrating figures, tables, equations, and citations in poster format
 
-## Visual Enhancement with Scientific Schematics
+## Figures
 
-**⚠️ MANDATORY: Every research poster MUST include at least 2-3 AI-generated figures using the scientific-schematics skill.**
+Posters are visual. Use the paper's own plots, photos, and diagrams. Do not require AI-generated images, and do not fill a figure quota with a model.
 
-This is not optional. Posters are primarily visual media - text-heavy posters fail to communicate effectively. Before finalizing any poster:
-1. Generate at minimum TWO schematics or diagrams
-2. Target 3-4 figures for comprehensive posters (methodology flowchart, key results visualization, conceptual framework)
-3. Figures should occupy 40-50% of poster area
-
-**How to generate figures:**
-- Use the **scientific-schematics** skill to generate AI-powered publication-quality diagrams
-- Simply describe your desired diagram in natural language
-- Nano Banana Pro will automatically generate, review, and refine the schematic
-
-**How to generate schematics:**
-```bash
-python scripts/generate_schematic.py "your diagram description" -o figures/output.png
-```
-
-The AI will automatically:
-- Create publication-quality images with proper formatting
-- Review and refine through multiple iterations
-- Ensure accessibility (colorblind-friendly, high contrast)
-- Save outputs in the figures/ directory
-
-**When to add schematics:**
-- Research methodology flowcharts for poster content
-- Conceptual framework diagrams
-- Experimental design visualizations
-- Data analysis pipeline diagrams
-- System architecture diagrams
-- Biological pathway illustrations
-- Any complex concept that benefits from visualization
-
-For detailed guidance on creating schematics, refer to the scientific-schematics skill documentation.
+- Results panels must be the real figures from the study.
+- A methods flowchart is optional. If it states sample sizes, those numbers come from the study.
+- scientific-schematics calls Gemini 3 Pro Image through OpenRouter (nickname: Nano Banana Pro). It may draft a conceptual layout sketch. It is not a required step and must not invent results.
+- A readable poster often gives roughly 40–50% of its area to the study's own graphics. That is a layout hint, not a generation quota.
 
 ---
 

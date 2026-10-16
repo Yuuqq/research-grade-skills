@@ -42,17 +42,14 @@ This skill should be used when:
 
 ---
 
-## Visual Enhancement with Scientific Schematics
+## Diagrams
 
-**⚠️ MANDATORY: Every CCS project MUST include at least 1-2 AI-generated figures using the scientific-schematics skill.**
+Draw the DAG, pipeline, or network from the design you already wrote. Do not require an AI-generated figure.
 
-Computational Social Science implies "Complexity". You must visualize the structure of your argument or your data.
+- A causal DAG should match the identification strategy in the design document.
+- A methods flowchart should name the actual data source, filter, model, and result.
+- scientific-schematics may draft a conceptual sketch. It calls Gemini 3 Pro Image through OpenRouter, it is optional, and it must not invent estimates.
 
-1.  **Methodological Flowchart**: A diagram showing the `Data Source -> Filter -> Model -> Result` pipeline.
-2.  **Causal DAG**: A Directed Acyclic Graph showing the Identification Strategy ($Treatment \to Outcome$, blocking $Confounder$).
-3.  **Network Topology**: A schematic representation of the network structure (e.g., "Core-Periphery" vs "Echo Chambers").
-
-**How to generate schematics:**
 ```bash
 python scripts/generate_schematic.py "A Causal DAG showing that Algorithm Recommendations (X) affects Polarization (Y), with User History (Z) as a confounder." -o figures/causal_dag.png
 ```

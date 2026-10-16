@@ -1,6 +1,6 @@
 ---
 name: scientific-schematics
-description: Create publication-quality scientific diagrams using Nano Banana Pro AI with smart iterative refinement. Uses Gemini 3 Pro for quality review. Only regenerates if quality is below threshold for your document type. Specialized in neural network architectures, system diagrams, flowcharts, biological pathways, and complex scientific visualizations.
+description: Create publication-quality conceptual diagrams with Gemini 3 Pro Image via OpenRouter (nickname Nano Banana Pro) and Gemini 3 Pro quality review. Regenerates only when quality is below the document-type threshold. Do not use it to invent measured results or study-flow counts. Specialized in neural network architectures, system diagrams, flowcharts, biological pathways, and complex scientific visualizations.
 allowed-tools: [Read, Write, Edit, Bash]
 license: MIT license
 metadata:
@@ -11,7 +11,9 @@ metadata:
 
 ## Overview
 
-Scientific schematics and diagrams transform complex concepts into clear visual representations for publication. **This skill uses Nano Banana Pro AI for diagram generation with Gemini 3 Pro quality review.**
+Scientific schematics and diagrams transform complex concepts into clear visual representations for publication. The generator calls Google Gemini 3 Pro Image through OpenRouter. "Nano Banana Pro" is the nickname for that model, not a separate product. Quality review uses Gemini 3 Pro. This is an optional paid API.
+
+Do not use it to draw CONSORT, PRISMA, or any other diagram whose numbers you have not already recorded. An image model will invent plausible counts.
 
 **How it works:**
 - Describe your diagram in natural language
@@ -42,7 +44,7 @@ Create any scientific diagram by simply describing it. Nano Banana Pro handles e
 
 ```bash
 # Generate for journal paper (highest quality threshold: 8.5/10)
-python scripts/generate_schematic.py "CONSORT participant flow diagram with 500 screened, 150 excluded, 350 randomized" -o figures/consort.png --doc-type journal
+python scripts/generate_schematic.py "CONSORT participant flow using the screening and randomization counts already recorded in the study log" -o figures/consort.png --doc-type journal
 
 # Generate for presentation (lower threshold: 6.5/10 - faster)
 python scripts/generate_schematic.py "Transformer encoder-decoder architecture showing multi-head attention" -o figures/transformer.png --doc-type presentation
@@ -83,7 +85,7 @@ Get an API key at: https://openrouter.ai/keys
 **Effective Prompts for Scientific Diagrams:**
 
 ✓ **Good prompts** (specific, detailed):
-- "CONSORT flowchart showing participant flow from screening (n=500) through randomization to final analysis"
+- "CONSORT flowchart using the screening, exclusion, and randomization counts already recorded in the study log"
 - "Transformer neural network architecture with encoder stack on left, decoder stack on right, showing multi-head attention and cross-attention connections"
 - "Biological signaling cascade: EGFR receptor → RAS → RAF → MEK → ERK → nucleus, with phosphorylation steps labeled"
 - "Block diagram of IoT system: sensors → microcontroller → WiFi module → cloud server → mobile app"
@@ -313,12 +315,13 @@ python scripts/generate_schematic.py "neural network" -o nn.png --doc-type journ
 ✓ "Circular pathway diagram with clockwise flow"
 ```
 
-**2. Include Quantitative Details:**
+**2. Include quantitative details only when you already have them:**
 ```
 ✓ "Neural network with input layer (784 nodes), hidden layer (128 nodes), output (10 nodes)"
-✓ "Flowchart showing n=500 screened, n=150 excluded, n=350 randomized"
+✓ "CONSORT flow using the screening and randomization counts from the study log"
 ✓ "Circuit with 1kΩ resistor, 10µF capacitor, 5V source"
 ```
+Do not invent study-flow counts in the prompt. An image model will draw whatever numbers you give it, including numbers you made up.
 
 **3. Specify Visual Style:**
 ```
@@ -346,13 +349,10 @@ python scripts/generate_schematic.py "neural network" -o nn.png --doc-type journ
 ### Example 1: CONSORT Flowchart
 ```bash
 python scripts/generate_schematic.py \
-  "CONSORT participant flow diagram for randomized controlled trial. \
-   Start with 'Assessed for eligibility (n=500)' at top. \
-   Show 'Excluded (n=150)' with reasons: age<18 (n=80), declined (n=50), other (n=20). \
-   Then 'Randomized (n=350)' splits into two arms: \
-   'Treatment group (n=175)' and 'Control group (n=175)'. \
-   Each arm shows 'Lost to follow-up' (n=15 and n=10). \
-   End with 'Analyzed' (n=160 and n=165). \
+  "CONSORT participant flow diagram for a randomized controlled trial. \
+   Use only the counts from the study log: assessed, excluded (with reasons), \
+   randomized per arm, lost to follow-up, and analyzed. \
+   Do not invent counts. \
    Use blue boxes for process steps, orange for exclusion, green for final analysis." \
   -o figures/consort.png
 ```

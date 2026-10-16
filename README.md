@@ -101,6 +101,8 @@ What CI enforces today, on every commit ([validate.yml](.github/workflows/valida
 
 In progress — a deeper editorial audit of all 69 skills across four dimensions: academic rigor, real-world scenario coverage, discoverability of descriptions, and runnability of examples. Findings and fixes land as regular releases.
 
+[REVIEW.md](REVIEW.md) is an advisory snapshot of known content and script issues. It is not a CI gate and it is not project policy. The inventory notes in `.planning/codebase/CONCERNS.md` (2026-04-30) are stale where they disagree with this file or with `validate.yml`.
+
 ## Contributing
 
 Factual fixes are the most valuable contribution: wrong API names, outdated signatures, dead links, missing pitfalls. See [CONTRIBUTING.md](CONTRIBUTING.md) — the validator tells you before CI does:

@@ -52,7 +52,7 @@ class TrademarkClient:
         url = f"{self.TSDR_BASE_URL}/casedocs/sn{serial_number}/info.json"
 
         try:
-            response = requests.get(url, headers=self.headers)
+            response = requests.get(url, headers=self.headers, timeout=30)
             response.raise_for_status()
             return response.json()
         except requests.exceptions.HTTPError as e:
@@ -73,7 +73,7 @@ class TrademarkClient:
         url = f"{self.TSDR_BASE_URL}/casedocs/rn{registration_number}/info.json"
 
         try:
-            response = requests.get(url, headers=self.headers)
+            response = requests.get(url, headers=self.headers, timeout=30)
             response.raise_for_status()
             return response.json()
         except requests.exceptions.HTTPError as e:

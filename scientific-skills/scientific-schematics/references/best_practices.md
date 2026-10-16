@@ -205,7 +205,7 @@ convert diagram.pdf -colorspace gray diagram_gray.pdf
 - Reference to detailed methods if applicable
 
 **Example Caption**
-"Participant flow diagram following CONSORT guidelines. Rectangles represent study stages, with participant numbers (n) shown. Exclusion criteria are listed beside each screening stage. Final analysis included n=350 participants across two groups."
+"Participant flow diagram following CONSORT guidelines. Rectangles represent study stages, with the recorded participant numbers (n) shown. Exclusion criteria are listed beside each screening stage. Final analysis reports the recorded n for each arm."
 
 ## Design Principles
 

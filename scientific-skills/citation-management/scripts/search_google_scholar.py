@@ -29,13 +29,19 @@ class GoogleScholarSearcher:
         Initialize searcher.
         
         Args:
-            use_proxy: Use free proxy (helps avoid rate limiting)
+            use_proxy: Route the query through untrusted free proxies. Default off.
         """
         if not SCHOLARLY_AVAILABLE:
             raise ImportError('scholarly library required. Install with: pip install scholarly')
         
         # Setup proxy if requested
         if use_proxy:
+            print(
+                "Warning: --use-proxy sends the query through scholarly FreeProxies "
+                "(untrusted third parties). That can expose the query to interception "
+                "and may violate Google Scholar's terms.",
+                file=sys.stderr,
+            )
             try:
                 pg = ProxyGenerator()
                 pg.FreeProxies()
@@ -217,7 +223,7 @@ def main():
     parser.add_argument(
         '--use-proxy',
         action='store_true',
-        help='Use free proxy to avoid rate limiting'
+        help='Send the query through untrusted free proxies (MITM and ToS risk)'
     )
     
     parser.add_argument(

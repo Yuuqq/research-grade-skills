@@ -76,6 +76,9 @@ def get_pdf_info(pdf_path):
         print("   macOS: brew install poppler")
         print("   Linux: sudo apt-get install poppler-utils")
         return None
+    except subprocess.TimeoutExpired:
+        print("Error: pdfinfo timed out after 60s")
+        return None
     except subprocess.CalledProcessError as e:
         print(f"Error running pdfinfo: {e}")
         return None
@@ -142,6 +145,8 @@ def check_fonts(pdf_path, venue_reqs):
         
     except FileNotFoundError:
         return {"status": "skip", "message": "pdffonts not available"}
+    except subprocess.TimeoutExpired:
+        return {"status": "skip", "message": "pdffonts timed out after 60s"}
     except subprocess.CalledProcessError:
         return {"status": "skip", "message": "Could not extract font information"}
 

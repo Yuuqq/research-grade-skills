@@ -4,7 +4,8 @@ import io
 from check_bounding_boxes import get_bounding_box_messages
 
 
-# Currently this is not run automatically in CI; it's just for documentation and manual checking.
+# Run from this directory: python -m unittest check_bounding_boxes_test.py
+# The validate workflow runs this file. It is not a coverage suite for other scripts.
 class TestGetBoundingBoxMessages(unittest.TestCase):
     
     def create_json_stream(self, data):

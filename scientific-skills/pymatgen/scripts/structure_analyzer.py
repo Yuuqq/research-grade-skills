@@ -130,17 +130,24 @@ def analyze_structure(struct: Structure, args) -> dict:
     print(f"{'Index':<6} {'Species':<10} {'Wyckoff':<10} {'Frac Coords':<30}")
     print("-" * 60)
 
+    wyckoff_symbols = None
+    if args.symmetry:
+        try:
+            dataset = SpacegroupAnalyzer(struct).get_symmetry_dataset()
+            if dataset is None:
+                raise ValueError("symmetry dataset is empty")
+            symbols = dataset["wyckoffs"] if isinstance(dataset, dict) else dataset.wyckoffs
+            if len(symbols) != len(struct):
+                raise ValueError(
+                    f"Wyckoff list length {len(symbols)} != site count {len(struct)}"
+                )
+            wyckoff_symbols = [str(symbol) for symbol in symbols]
+        except (AttributeError, IndexError, KeyError, TypeError, ValueError) as e:
+            print(f"Warning: could not determine Wyckoff symbols: {e}", file=sys.stderr)
+
     for i, site in enumerate(struct):
         coords_str = f"[{site.frac_coords[0]:.4f}, {site.frac_coords[1]:.4f}, {site.frac_coords[2]:.4f}]"
-        wyckoff = "N/A"
-
-        if args.symmetry:
-            try:
-                sga = SpacegroupAnalyzer(struct)
-                sym_struct = sga.get_symmetrized_structure()
-                wyckoff = sym_struct.equivalent_sites[0][0].species_string  # Simplified
-            except Exception:
-                pass
+        wyckoff = wyckoff_symbols[i] if wyckoff_symbols is not None else "N/A"
 
         print(f"{i:<6} {site.species_string:<10} {wyckoff:<10} {coords_str:<30}")
 
